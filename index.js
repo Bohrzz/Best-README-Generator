@@ -1,7 +1,7 @@
 // TODO: Include packages needed for this application
 const fs = require("fs/promises");
 const inquirer = require("inquirer");
-const {generateMarkdown} = require("./utils/generateMarkdown");
+const { generateMarkdown } = require("./utils/generateMarkdown");
 const path = require("path");
 // TODO: Create an array of questions for user input
 const questions = [
@@ -31,17 +31,17 @@ const questions = [
     message: "How do you install the program?",
   },
   {
-    name: "Usage Information",
+    name: "Usage",
     type: "input",
     message: "What does a user need to know to use this application?",
   },
   {
-    name: "Contribution Guidelines",
+    name: "Contribution",
     type: "input",
     message: "Who contributed to this project?",
   },
   {
-    name: "Test Instructions",
+    name: "Test",
     type: "input",
     message: "How do you test this application",
   },
@@ -49,7 +49,7 @@ const questions = [
     name: "license",
     type: "list",
     message: "What liscense did you use?",
-    choices: ["MIT", "Apache", "GPL", "BSD", "None"],
+    choices: ["MIT", "Apache-2.0", "GPL", "BSD", "None"],
   },
 ];
 
@@ -63,10 +63,16 @@ function writeToFile(fileName, data) {
 
 // TODO: Create a function to initialize app
 async function init() {
-  const answers = await inquirer.prompt(questions);
-  const markdown = generateMarkdown(answers);
-  writeToFile("README.md",markdown);
+  try {
+    const answers = await inquirer.prompt(questions);
+    console.log(answers);
+    if (answers) {
+      const markdown = generateMarkdown(answers);
+      writeToFile("README.md", markdown);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 }
-
 // Function call to initialize app
 init();
